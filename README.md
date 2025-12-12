@@ -1,10 +1,3 @@
-// Project: Ketekura - React Frontend
-// Files included in this single-file snapshot. Create these files in a Vite + React + Tailwind project.
-
-
-/*
-README.md
-
 
 # Ketekura - React Frontend
 
