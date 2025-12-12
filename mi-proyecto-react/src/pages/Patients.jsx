@@ -1,13 +1,21 @@
-// src/pages/Attendances.jsx
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import DataTable from '../components/ui/DataTable'
 import Loader from '../components/ui/Loader'
 import { api } from '../api'
-import { Container, Nav, Navbar, NavDropdown, Row, Col, Card, Button } from 'react-bootstrap'
 
-export default function Attendances() {
-  const [attendances, setAttendances] = useState([])
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+//import Footer from '../components/ui/Footer'; // si quieres crear un componente Footer aparte
+
+export default function Patients() {
+  const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(false)
   const [q, setQ] = useState('')
   const navigate = useNavigate()
@@ -17,26 +25,24 @@ export default function Attendances() {
   async function load() {
     try {
       setLoading(true)
-      const res = await api.listAttendances({ page: 1, limit: 50 })
-      setAttendances(res.data || [])
+      const res = await api.listPatients()
+      setPatients(res.data || res || [])
     } catch (e) {
       console.error(e)
-      alert('Error cargando atenciones')
+      alert('Error cargando pacientes')
     } finally {
       setLoading(false)
     }
   }
 
   const cols = [
-    { key: 'id', title: 'ID' },
-    { key: 'date', title: 'Fecha', render: r => new Date(r.date).toLocaleString() },
-    { key: 'patientName', title: 'Paciente', render: r => r.patientName || r.patient?.fullName },
-    { key: 'doctorName', title: 'Médico', render: r => r.doctorName || r.doctor?.fullName },
-    { key: 'notes', title: 'Notas' }
+    { key: 'id', title: 'RUT', render: r => r.pacRut || r.id },
+    { key: 'fullName', title: 'Nombre', render: r => r.fullName || `${r.pnombre || ''} ${r.apaterno || ''}` },
+    { key: 'telefono', title: 'Teléfono' }
   ]
 
   return (
-    <div id="atenciones" style={{ backgroundColor: "#e8d7ff", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#e8d7ff", minHeight: "100vh" }}>
 
       {/* Navbar Fijo */}
       <Navbar bg="light" expand="lg" className="shadow-sm fixed-top">
@@ -47,11 +53,11 @@ export default function Attendances() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#">Home</Nav.Link>
-              <Nav.Link href="/Doctors">Medicos</Nav.Link>
-              <Nav.Link href="/Attendances" active>Atenciones</Nav.Link>
+              <Nav.Link href="#" active>Home</Nav.Link>
+              <Nav.Link href="medicos">Medicos</Nav.Link>
+              <Nav.Link href="atenciones">Atenciones</Nav.Link>
               <NavDropdown title="Más" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#">Registrar Atención</NavDropdown.Item>
+                <NavDropdown.Item href="#">Registrar Paciente</NavDropdown.Item>
                 <NavDropdown.Item href="#">Reportes</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#">Configuración</NavDropdown.Item>
@@ -69,8 +75,8 @@ export default function Attendances() {
 
         {/* Título de sección */}
         <div className="text-center mb-4">
-          <h1 style={{ color: "#6a1b9a", fontWeight: "700" }}>Atenciones</h1>
-          <p className="text-muted">Historial de atenciones (incluye datos en MongoDB cuando aplique).</p>
+          <h1 style={{ color: "#6a1b9a", fontWeight: "700" }}>Pacientes</h1>
+          <p className="text-muted">Lista de pacientes registrados</p>
         </div>
 
         {/* Buscador */}
@@ -81,18 +87,18 @@ export default function Attendances() {
               value={q}
               onChange={e => setQ(e.target.value)}
               className="form-control"
-              placeholder="Buscar por paciente, médico o ID..."
+              placeholder="Buscar por nombre o RUT..."
             />
           </Col>
-          <Col xs={12} md={4}>
-            <Button
-              className="w-100 w-md-auto"
-              onClick={load}
-              style={{ backgroundColor: "#6a1b9a", borderColor: "#6a1b9a" }}
-            >
-              Buscar
-            </Button>
-          </Col>
+<Col xs={12} md={4}>
+  <Button
+    className="w-100 w-md-auto"
+    onClick={load}
+    style={{ backgroundColor: "#6a1b9a", borderColor: "#6a1b9a" }}
+  >
+    Buscar
+  </Button>
+</Col>
         </Row>
 
         {/* Tabla dentro de Card */}
@@ -106,8 +112,8 @@ export default function Attendances() {
               <div className="table-responsive">
                 <DataTable
                   columns={cols}
-                  data={attendances}
-                  onRowClick={(r) => navigate(`/atenciones/${r.id}`)}
+                  data={patients}
+                  onRowClick={(r) => navigate(`/pacientes/${r.pacRut || r.id}`)}
                 />
               </div>
             )}
