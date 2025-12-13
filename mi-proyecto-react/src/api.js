@@ -15,6 +15,7 @@ export const api = {
   // Oracle: Pacientes
   listPatients: () => request('/pacientes'),
   getPatient: (rut) => request(`/pacientes/${rut}`),
+  getTotalPatients: () => request('/pacientes/total'),
 
   // Oracle: Médicos
   listDoctors: () => request('/medicos'),

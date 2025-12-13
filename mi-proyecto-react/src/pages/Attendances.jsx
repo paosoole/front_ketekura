@@ -47,9 +47,9 @@ export default function Attendances() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#">Home</Nav.Link>
-              <Nav.Link href="/Doctors">Medicos</Nav.Link>
-              <Nav.Link href="/Attendances" active>Atenciones</Nav.Link>
+              <Nav.Link href="/Dashboard">Home</Nav.Link>
+              <Nav.Link href="/medicos">Medicos</Nav.Link>
+              <Nav.Link href="/atenciones" active>Atenciones</Nav.Link>
               <NavDropdown title="Más" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#">Registrar Atención</NavDropdown.Item>
                 <NavDropdown.Item href="#">Reportes</NavDropdown.Item>

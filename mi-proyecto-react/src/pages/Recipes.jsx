@@ -42,7 +42,7 @@ export default function Recipes() {
   ]
 
   return (
-    <div style={{ backgroundColor: "#e8d7ff", minHeight: "100vh" }}>
+    <div id="recetas" style={{ backgroundColor: "#e8d7ff", minHeight: "100vh" }}>
 
       {/* Navbar fijo */}
       <Navbar bg="light" expand="lg" className="shadow-sm fixed-top">

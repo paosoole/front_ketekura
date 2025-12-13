@@ -1,11 +1,26 @@
 // src/pages/Dashboard.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Nav, Navbar, NavDropdown, Row, Col, Card } from "react-bootstrap";
+import { api } from "../api"; // ajusta la ruta según tu proyecto
 
 export default function Dashboard() {
+  const [totalPacientes, setTotalPacientes] = useState("—");
+  
+        useEffect(() => {
+          api.getTotalPatients()
+            .then(data => {
+              console.log('Respuesta completa de API:', data);  // Aquí veremos el número (por ejemplo 3)
+              setTotalPacientes(data); // Directamente asignamos el número
+            })
+            .catch(err => {
+              console.error('Error al obtener total de pacientes:', err);
+              setTotalPacientes("—"); // Muestra un guion si hay error
+            });
+        }, []);
+
+
   return (
     <div style={{ backgroundColor: "#e8d7ff", minHeight: "100vh" }}>
-
       {/* Navbar Fijo */}
       <Navbar bg="light" expand="lg" className="shadow-sm fixed-top">
         <Container>
@@ -54,7 +69,7 @@ export default function Dashboard() {
             <Card className="shadow-sm">
               <Card.Body>
                 <h5 className="text-muted">Pacientes Registrados</h5>
-                <div className="text-3xl fw-bold fs-1">—</div>
+                <div className="text-3xl fw-bold fs-1">{totalPacientes}</div>
                 <small className="text-muted">Total pacientes</small>
               </Card.Body>
             </Card>
