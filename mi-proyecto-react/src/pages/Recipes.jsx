@@ -16,16 +16,24 @@ import Button from 'react-bootstrap/Button'
 export default function Recipes() {
   const [recipes, setRecipes] = useState([])
   const [loading, setLoading] = useState(false)
-  const [q, setQ] = useState('')
+  const [q, setQ] = useState('')  // Búsqueda por paciente
   const navigate = useNavigate()
 
   useEffect(() => { load() }, [])
 
+  // Función para cargar recetas, puede ser con o sin filtro por paciente (RUT)
   async function load() {
     try {
       setLoading(true)
-      const res = await api.listRecipes()
-      setRecipes(res.data || res || [])
+      let res
+      if (q) {
+        // Si hay un RUT o texto en el campo de búsqueda, buscar por paciente
+        res = await api.listRecipesByRut(q)
+      } else {
+        // Si no, obtener todas las recetas
+        res = await api.listRecipes()
+      }
+      setRecipes(res || [])
     } catch (e) {
       console.error(e)
       alert('Error cargando recetas')
@@ -34,17 +42,18 @@ export default function Recipes() {
     }
   }
 
+  // Definición de las columnas para la tabla
   const cols = [
     { key: 'id', title: 'ID', render: r => r.id || r._id },
     { key: 'fecha_receta', title: 'Fecha', render: r => r.fecha_receta || r.date },
-    { key: 'pacRut', title: 'Paciente', render: r => r.pacRut || r.patientId },
+    { key: 'pacRut', title: 'Paciente', render: r => r.pacRut || r.patientId },  // Mostrar RUT del paciente
     { key: 'diagnostico', title: 'Diagnóstico' }
   ]
 
   return (
-    <div id="recetas" style={{ backgroundColor: "#e8d7ff", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#e8d7ff", minHeight: "100vh" }}>
 
-      {/* Navbar fijo */}
+      {/* Navbar Fijo */}
       <Navbar bg="light" expand="lg" className="shadow-sm fixed-top">
         <Container>
           <Navbar.Brand style={{ color: "#6a1b9a", fontWeight: "700" }}>
@@ -70,10 +79,10 @@ export default function Recipes() {
       {/* Espacio para navbar fijo */}
       <div style={{ paddingTop: "80px" }}></div>
 
-      {/* Contenedor principal */}
+      {/* Contenedor Principal */}
       <Container className="pb-4">
 
-        {/* Título sección */}
+        {/* Título de la sección */}
         <div className="text-center mb-4">
           <h1 style={{ color: "#6a1b9a", fontWeight: "700" }}>Recetas Médicas</h1>
           <p className="text-muted">Listado de recetas almacenadas</p>
@@ -85,7 +94,7 @@ export default function Recipes() {
             <input
               type="text"
               value={q}
-              onChange={e => setQ(e.target.value)}
+              onChange={e => setQ(e.target.value)}  // Actualiza el filtro
               className="form-control"
               placeholder="Buscar por paciente, diagnóstico o fecha..."
             />
@@ -101,7 +110,7 @@ export default function Recipes() {
           </Col>
         </Row>
 
-        {/* Tabla dentro de Card */}
+        {/* Tabla de recetas */}
         <Card className="shadow-sm">
           <Card.Body>
             {loading ? (
@@ -113,7 +122,7 @@ export default function Recipes() {
                 <DataTable
                   columns={cols}
                   data={recipes}
-                  onRowClick={r => navigate(`/recetas/${r.id || r._id}`)}
+                  onRowClick={(r) => navigate(`/recetas/${r.id || r._id}`)}  // Navega al detalle de la receta
                 />
               </div>
             )}
@@ -125,8 +134,12 @@ export default function Recipes() {
       {/* Footer */}
       <footer className="bg-light text-center text-muted py-3 mt-4 shadow-sm">
         <Container>
-          <p className="mb-0">© 2025 Clínica Ketecura - Todos los derechos reservados</p>
-          <small>Contacto: info@clinicaketecura.cl | +56 9 1234 5678</small>
+          <p className="mb-0">
+            © 2025 Clínica Ketecura - Todos los derechos reservados
+          </p>
+          <small>
+            Contacto: info@clinicaketecura.cl | +56 9 1234 5678
+          </small>
         </Container>
       </footer>
     </div>

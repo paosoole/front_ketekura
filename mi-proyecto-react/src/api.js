@@ -5,6 +5,7 @@ async function request(path, options = {}) {
     headers: { 'Content-Type': 'application/json' },
     ...options,
   });
+  console.log('API response:', res);
 
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
 

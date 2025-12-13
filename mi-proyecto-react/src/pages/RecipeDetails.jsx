@@ -24,7 +24,7 @@ export default function RecipeDetail() {
   async function load() {
     try {
       setLoading(true)
-      const res = await api.getRecipeDetail(id)
+      const res = await api.recipeDetails(id)
       setData(res)
     } catch (e) {
       console.error(e)

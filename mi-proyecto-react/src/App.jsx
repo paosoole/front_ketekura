@@ -8,6 +8,8 @@ import PatientDetails from './pages/PatientDetails';
 import Doctors from './pages/Doctors';
 import Attendances from './pages/Attendances';
 import Payments from './pages/Payments';
+import Recipes from './pages/Recipes';
+import RecipesDetails from './pages/RecipeDetails';
 
 export default function App() {
   return (
@@ -31,6 +33,12 @@ export default function App() {
 
       {/* Pagos */}
       <Route path="/pagos" element={<Payments />} />
+
+      {/*Recetas*/}
+      <Route path="/recetas/:id" element={<Recipes />} />
+      <Route path="/recetas/:rut" element={<RecipesDetails />} />
+
+      <Route path="/recetas/detalle/:id" element={<RecipesDetails />} />
 
     </Routes>
   );

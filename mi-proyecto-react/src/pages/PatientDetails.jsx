@@ -30,7 +30,7 @@ export default function PatientDetails() {
       const p = await api.getPatient(id)
       setPatient(p)
       const r = await api.listRecipesByRut(id)
-      setRecipes(r.data || r || [])
+      setRecipes(r || [])
     } catch (err) {
       console.error(err)
       alert('Error cargando paciente')
@@ -83,13 +83,12 @@ export default function PatientDetails() {
               </div>
             </div>
             <div className="d-flex gap-2">
-              <Button variant="outline-secondary" disabled>
+              <Button variant="outline-secondary" onClick={() => navigate(`/recetas/${id}`)}>
                 Editar
               </Button>
               <Button
                 variant="primary"
-                onClick={() => navigate('/recetas')}
-                disabled
+                onClick= {() => navigate(`/recetas/${patient.pacRut || patient.id}`)}       
               >
                 Ver recetas
               </Button>
@@ -108,25 +107,25 @@ export default function PatientDetails() {
               </div>
             ) : (
               <ul className="list-unstyled mt-3">
-                {recipes.map(r => (
-                  <li
-                    key={r.id || r._id}
-                    className="border rounded p-3 d-flex justify-content-between align-items-start mb-2"
-                  >
-                    <div>
-                      <div style={{ fontWeight: '500' }}>{r.diagnostico || r.summary || r.type}</div>
-                      <div className="text-muted" style={{ fontSize: '0.8rem' }}>
-                        {r.fecha_receta || r.date || ''} - ID: {r.id || r._id}
-                      </div>
+                {recipes.map((r) => (
+                <li
+                  key={r.id || r._id}  // Asegúrate de que cada "key" sea único
+                  className="border rounded p-3 d-flex justify-content-between align-items-start mb-2"
+                >
+                  <div>
+                    <div style={{ fontWeight: '500' }}>{r.diagnostico || r.summary || r.type}</div>
+                    <div className="text-muted" style={{ fontSize: '0.8rem' }}>
+                      {r.fecha_receta || r.date || ''} - ID: {r.id || r._id}
                     </div>
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={() => navigate(`/recetas/${r.id || r._id}`)}
-                    >
-                      Ver
-                    </Button>
-                  </li>
+                  </div>
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={() => navigate(`/recetas/detalle/${r.id || r._id}`)}  // Redirige al detalle de la receta
+                  >
+                    Ver
+                  </Button>
+                </li>
                 ))}
               </ul>
             )}
