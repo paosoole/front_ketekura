@@ -51,7 +51,7 @@ export default function CreatePatient() {
                   <Form.Group className="mb-3">
                     <Form.Label>RUT</Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"  // Cambié a "number" para asegurar que sea un número
                       name="pac_run"
                       value={patient.pac_run}
                       onChange={handleChange}
@@ -145,7 +145,7 @@ export default function CreatePatient() {
                   <Form.Group className="mb-3">
                     <Form.Label>ID de Salud</Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"  // Cambié a "number" para asegurar que sea un número
                       name="sal_id"
                       value={patient.sal_id}
                       onChange={handleChange}
