@@ -5,19 +5,24 @@ import { api } from "../api"; // ajusta la ruta según tu proyecto
 
 export default function Dashboard() {
   const [totalPacientes, setTotalPacientes] = useState("—");
-  
-        useEffect(() => {
-          api.getTotalPatients()
-            .then(data => {
-              console.log('Respuesta completa de API:', data);  // Aquí veremos el número (por ejemplo 3)
-              setTotalPacientes(data); // Directamente asignamos el número
-            })
-            .catch(err => {
-              console.error('Error al obtener total de pacientes:', err);
-              setTotalPacientes("—"); // Muestra un guion si hay error
-            });
-        }, []);
 
+  useEffect(() => {
+    api.getTotalPatients()
+      .then(data => {
+        console.log('Respuesta completa de API:', data);  // Aquí veremos el número (por ejemplo 3)
+
+        // Aseguramos que el valor que queremos es el de la propiedad `total`
+        if (data && data.total !== undefined) {
+          setTotalPacientes(data.total); // Asignamos el valor total directamente
+        } else {
+          setTotalPacientes("—"); // Si no hay un valor de total, mostramos el guion
+        }
+      })
+      .catch(err => {
+        console.error('Error al obtener total de pacientes:', err);
+        setTotalPacientes("—"); // Muestra un guion si hay error
+      });
+  }, []); // Este useEffect solo se ejecuta una vez al montar el componente
 
   return (
     <div style={{ backgroundColor: "#e8d7ff", minHeight: "100vh" }}>
