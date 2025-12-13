@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import DataTable from '../components/ui/DataTable'
 import Loader from '../components/ui/Loader'
 import { api } from '../api'
-
+import { useParams } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
@@ -14,33 +14,27 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 
 export default function Recipes() {
+  const { rut } = useParams()
   const [recipes, setRecipes] = useState([])
   const [loading, setLoading] = useState(false)
   const [q, setQ] = useState('')  // Búsqueda por paciente
   const navigate = useNavigate()
 
-  useEffect(() => { load() }, [])
+  useEffect(() => { load() }, [rut]);
 
   // Función para cargar recetas, puede ser con o sin filtro por paciente (RUT)
-  async function load() {
-    try {
-      setLoading(true)
-      let res
-      if (q) {
-        // Si hay un RUT o texto en el campo de búsqueda, buscar por paciente
-        res = await api.listRecipesByRut(q)
-      } else {
-        // Si no, obtener todas las recetas
-        res = await api.listRecipes()
+    async function load() {
+      try {
+        setLoading(true);
+        const res = await api.listRecipesByRut(rut); // Usamos el `id` (el `rut` del paciente)
+        setRecipes(res || []);
+      } catch (e) {
+        console.error(e);
+        alert('Error cargando recetas');
+      } finally {
+        setLoading(false);
       }
-      setRecipes(res || [])
-    } catch (e) {
-      console.error(e)
-      alert('Error cargando recetas')
-    } finally {
-      setLoading(false)
     }
-  }
 
   // Definición de las columnas para la tabla
   const cols = [

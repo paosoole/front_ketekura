@@ -28,6 +28,7 @@ export const api = {
   // MongoDB: Recetas / Exámenes / Atenciones
   listRecipesByRut: (rut) => request(`/recetas/${rut}`),
   recipeDetails: (id) => request(`/recetas/detalle/${id}`),
+  listRecipes: () => request('/recetas'),
 
   deleteRecipe: (id) =>
     request(`/recetas/${id}`, { method: 'DELETE' }),

@@ -35,9 +35,7 @@ export default function App() {
       <Route path="/pagos" element={<Payments />} />
 
       {/*Recetas*/}
-      <Route path="/recetas/:id" element={<Recipes />} />
-      <Route path="/recetas/:rut" element={<RecipesDetails />} />
-
+      <Route path="/recetas/:rut" element={<Recipes />} />
       <Route path="/recetas/detalle/:id" element={<RecipesDetails />} />
 
     </Routes>
