@@ -16,7 +16,7 @@ export default function Dashboard() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/" active>Dashboard</Nav.Link>
+              <Nav.Link href="/Dashboard" active>Dashboard</Nav.Link>
               <Nav.Link href="/pacientes">Pacientes</Nav.Link>
               <Nav.Link href="/medicos">Médicos</Nav.Link>
               <Nav.Link href="/atenciones">Atenciones</Nav.Link>
