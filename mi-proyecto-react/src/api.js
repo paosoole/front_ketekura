@@ -17,6 +17,11 @@ export const api = {
   listPatients: () => request('/pacientes'),
   getPatient: (rut) => request(`/pacientes/${rut}`),
   getTotalPatients: () => request('/pacientes/total'),
+  
+  crearPaciente: (data) => request('/pacientes', {
+    method: 'POST',
+    body: JSON.stringify(data),  // Enviar los datos como JSON
+  }),
 
   // Oracle: Médicos
   listDoctors: () => request('/medicos'),
@@ -32,4 +37,8 @@ export const api = {
 
   deleteRecipe: (id) =>
     request(`/recetas/${id}`, { method: 'DELETE' }),
+
+
+
+  
 };

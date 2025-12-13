@@ -80,26 +80,35 @@ export default function Patients() {
         </div>
 
         {/* Buscador */}
-        <Row className="mb-4">
-          <Col xs={12} md={8} className="mb-2 mb-md-0">
-            <input
-              type="text"
-              value={q}
-              onChange={e => setQ(e.target.value)}
-              className="form-control"
-              placeholder="Buscar por nombre o RUT..."
-            />
-          </Col>
-<Col xs={12} md={4}>
-  <Button
-    className="w-100 w-md-auto"
-    onClick={load}
-    style={{ backgroundColor: "#6a1b9a", borderColor: "#6a1b9a" }}
-  >
-    Buscar
-  </Button>
-</Col>
-        </Row>
+          <Row className="mb-4">
+            <Col xs={12} md={8} className="mb-2 mb-md-0">
+              <input
+                type="text"
+                value={q}
+                onChange={e => setQ(e.target.value)}
+                className="form-control"
+                placeholder="Buscar por nombre o RUT..."
+              />
+            </Col>
+            
+            {/* Botones en fila */}
+            <Col xs={12} md={4} className="d-flex justify-content-between">
+              <Button
+                className="w-auto"
+                onClick={load}
+                style={{ backgroundColor: "#6a1b9a", borderColor: "#6a1b9a" }}
+              >
+                Buscar
+              </Button>
+              <Button
+                className="w-auto"
+                onClick={() => navigate('/crear-paciente')}
+                style={{ backgroundColor: "#6a1b9a", borderColor: "#6a1b9a" }}
+              >
+                Crear Paciente
+              </Button>
+            </Col>
+          </Row>
 
         {/* Tabla dentro de Card */}
         <Card className="shadow-sm">

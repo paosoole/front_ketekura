@@ -10,6 +10,7 @@ import Attendances from './pages/Attendances';
 import Payments from './pages/Payments';
 import Recipes from './pages/Recipes';
 import RecipesDetails from './pages/RecipeDetails';
+import CreatePatient from './pages/CreatePatient';
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
       {/* Pacientes */}
       <Route path="/pacientes" element={<Patients />} />
       <Route path="/pacientes/:id" element={<PatientDetails />} />
+      <Route path="/crear-paciente" element={<CreatePatient />} />
 
       {/* Médicos */}
       <Route path="/medicos" element={<Doctors />} />
