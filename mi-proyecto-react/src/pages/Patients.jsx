@@ -38,19 +38,30 @@ export default function Patients() {
   // Función para filtrar pacientes de acuerdo al texto de búsqueda
   const filterPatients = (patients) => {
     return patients.filter(patient => {
-      const fullName = patient.fullName || '';  // Asegurarse de que `fullName` no sea `undefined` ni `null`
-      const pacRut = patient.pacRut ? patient.pacRut.toString() : '';      // Asegurarse de que `pacRut` no sea `undefined` ni `null`
+      const fullName =  `${patient.pnombre || ''} ${patient.apaterno || ''}`;  // Asegurarse de que `fullName` no sea `undefined` ni `null`
+      const pacRut = patient.pac_run ? patient.pac_run.toString() : '';      // Asegurarse de que `pacRut` no sea `undefined` ni `null`
       
       return fullName.toLowerCase().includes(q.toLowerCase()) || pacRut.includes(q);
     });
   };
 
 // Definición de las columnas de la grilla
-  const cols = [
-    { key: 'id', title: 'RUT', render: r => r.pacRut || r.id },
-    { key: 'fullName', title: 'Nombre', render: r => r.fullName || `${r.pnombre || ''} ${r.apaterno || ''}` },
-    { key: 'telefono', title: 'Teléfono' }
-  ]
+const cols = [
+  {
+    key: 'pac_run',
+    title: 'RUT',
+    render: r => r.pac_run
+  },
+  {
+    key: 'fullName',
+    title: 'Nombre',
+    render: r => `${r.pnombre || ''} ${r.apaterno || ''}`
+  },
+  {
+    key: 'telefono',
+    title: 'Teléfono'
+  }
+]
 
   return (
     <div style={{ backgroundColor: "#e8d7ff", minHeight: "100vh" }}>
