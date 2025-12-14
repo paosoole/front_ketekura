@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import DataTable from '../components/ui/DataTable'
 import Loader from '../components/ui/Loader'
 import { api } from '../api'
-import { useParams } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
@@ -14,20 +13,22 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 
 export default function Recipes() {
-  const { rut } = useParams()
   const [recipes, setRecipes] = useState([])
   const [loading, setLoading] = useState(false)
   const [q, setQ] = useState('')  // Búsqueda por paciente
+  // eslint-disable-next-line no-unused-vars
+  const [filteredRecipes, setFilteredRecipes] = useState([])
   const navigate = useNavigate()
 
-  useEffect(() => { load() }, [rut]);
+  useEffect(() => { load() }, [q]);
 
   // Función para cargar recetas, puede ser con o sin filtro por paciente (RUT)
     async function load() {
       try {
         setLoading(true);
-        const res = await api.listRecipesByRut(rut); // Usamos el `id` (el `rut` del paciente)
-        setRecipes(res || []);
+        const res = await api.listRecipes(); // Usamos el `id` (el `rut` del paciente)
+        setRecipes(res.data || res || []);
+        setFilteredRecipes(res.data || res || []);
       } catch (e) {
         console.error(e);
         alert('Error cargando recetas');
@@ -35,6 +36,31 @@ export default function Recipes() {
         setLoading(false);
       }
     }
+  // Función para filtrar recetas de acuerdo al texto de búsqueda
+  const filterRecipes = (recipes) => {
+    return recipes.filter(recipe => {
+      const fullName = recipe.fullName || '';  // Asegurarse de que `fullName` no sea `undefined` ni `null`
+      const pacRut = recipe.pacRut ? recipe.pacRut.toString() : '';      // Asegurarse de que `pacRut` no sea `undefined` ni `null`
+      const diagnostico = recipe.diagnostico || '';
+      const fecha_receta = recipe.fecha_receta || '';
+
+      return fullName.toLowerCase().includes(q.toLowerCase()) || 
+              pacRut.includes(q) ||
+              diagnostico.toLowerCase().includes(q.toLowerCase()) ||
+              fecha_receta.toLowerCase().includes(q.toLowerCase());
+    });
+  };
+
+    useEffect(() => {
+    // Filtramos las recetas cada vez que cambie el valor de `q`
+    const filtered = filterRecipes(recipes);
+    setFilteredRecipes(filtered);
+
+    // Si no hay resultados, podemos mostrar el mensaje "No se encontraron resultados"
+    if (filtered.length === 0 && q !== '') {
+      setFilteredRecipes([{ id: 0, message: "No se encontraron resultados" }]);
+    }
+  }, [q, recipes]);
 
   // Definición de las columnas para la tabla
   const cols = [
@@ -115,7 +141,7 @@ export default function Recipes() {
               <div className="table-responsive">
                 <DataTable
                   columns={cols}
-                  data={recipes}
+                  data={filterRecipes(recipes)}
                   onRowClick={(r) => navigate(`/recetas/${r.id || r._id}`)}  // Navega al detalle de la receta
                 />
               </div>
