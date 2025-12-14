@@ -14,7 +14,7 @@ export default function CreatePatient() {
     amaterno: '',       // Apellido materno
     fecha_nacimiento: '', // Fecha de nacimiento
     telefono: '',       // Teléfono
-    sal_id: '',         // ID de salud
+    sal_id: '',         // ID de salud (asegurado como sal_id)
   })
   const [loading, setLoading] = useState(false)
 
@@ -27,9 +27,9 @@ export default function CreatePatient() {
     e.preventDefault()
     try {
       setLoading(true)
-      await api.crearPaciente(patient)  // Asegúrate de que `crearPaciente` esté configurado en tu API
+      await api.crearPaciente(patient)  
       alert('Paciente creado con éxito')
-      navigate('/pacientes')  // Redirige a la lista de pacientes después de crear
+      navigate('/pacientes')  
     } catch (error) {
       console.error(error)
       alert('Error creando paciente')

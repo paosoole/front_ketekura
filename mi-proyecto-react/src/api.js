@@ -58,4 +58,5 @@ export const api = {
   deleteRecipe: (id) =>
     request(`/recetas/${id}`, { method: 'DELETE' }),
 };
+
 export default api;

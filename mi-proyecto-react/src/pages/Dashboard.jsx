@@ -39,10 +39,10 @@ export default function Dashboard() {
               <Nav.Link href="/Dashboard" active>Dashboard</Nav.Link>
               <Nav.Link href="/pacientes">Pacientes</Nav.Link>
               <Nav.Link href="/medicos">Médicos</Nav.Link>
-              <Nav.Link href="/atenciones">Atenciones</Nav.Link>
+              <Nav.Link href="/recetas/detalle/">Recetas</Nav.Link>
 
               <NavDropdown title="Más" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#">Reportes</NavDropdown.Item>
+                <NavDropdown.Item href="/Payments">Pagos</NavDropdown.Item>
                 <NavDropdown.Item href="#">Configuración</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#">Cerrar sesión</NavDropdown.Item>

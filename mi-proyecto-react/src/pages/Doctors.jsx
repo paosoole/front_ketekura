@@ -18,7 +18,7 @@ export default function Doctors() {
   async function load() {
     try {
       setLoading(true)
-      const res = await api.listDoctors()
+      const res = await api.listDoctors();
       setDoctors(res.data || res || [])
     } catch (e) {
       console.error(e)
@@ -27,7 +27,15 @@ export default function Doctors() {
       setLoading(false)
     }
   }
+  // Función para filtrar pacientes de acuerdo al texto de búsqueda
+  const filterDoctors = (doctors) => {
+    return doctors.filter(doctor => {
+      const fullName = doctor.fullName || '';  // Asegurarse de que `fullName` no sea `undefined` ni `null`
+      const medRut = doctor.medRut ? doctor.medRut.toString() : '';      // Asegurarse de que `medRut` no sea `undefined` ni `null`
 
+      return fullName.toLowerCase().includes(q.toLowerCase()) || medRut.includes(q);
+    });
+  };
   const cols = [
     { key: 'medRut', title: 'RUT', render: r => r.medRut || r.id },
     { key: 'fullName', title: 'Nombre', render: r => r.fullName || `${r.pnombre || ''} ${r.apaterno || ''}` },
@@ -48,7 +56,7 @@ export default function Doctors() {
             <Nav className="me-auto">
               <Nav.Link href="/Dashboard" >Home</Nav.Link>
               <Nav.Link href="/medicos" active>Medicos</Nav.Link>
-              <Nav.Link href="/atenciones">Atenciones</Nav.Link>
+              <Nav.Link href="/recetas/detalle/">Recetas</Nav.Link>
               <NavDropdown title="Más" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#">Registrar Médico</NavDropdown.Item>
                 <NavDropdown.Item href="#">Reportes</NavDropdown.Item>
@@ -105,7 +113,7 @@ export default function Doctors() {
               <div className="table-responsive">
                 <DataTable
                   columns={cols}
-                  data={doctors}
+                  data={filterDoctors(doctors)}
                   onRowClick={(r) => navigate(`/medicos/${r.medRut || r.id}`)}
                 />
               </div>

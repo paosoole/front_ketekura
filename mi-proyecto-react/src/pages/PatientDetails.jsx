@@ -54,7 +54,7 @@ export default function PatientDetails() {
             <Nav className="me-auto">
               <Nav.Link href="#" onClick={() => navigate('/Dashboard')}>Home</Nav.Link>
               <Nav.Link href="/medicos">Medicos</Nav.Link>
-              <Nav.Link href="/atenciones">Atenciones</Nav.Link>
+              <Nav.Link href="/recetas/detalle/">Recetas</Nav.Link>
               <NavDropdown title="Más" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#">Registrar Paciente</NavDropdown.Item>
                 <NavDropdown.Item href="#">Reportes</NavDropdown.Item>

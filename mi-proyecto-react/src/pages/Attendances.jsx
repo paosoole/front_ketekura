@@ -50,6 +50,7 @@ export default function Attendances() {
               <Nav.Link href="/Dashboard">Home</Nav.Link>
               <Nav.Link href="/medicos">Medicos</Nav.Link>
               <Nav.Link href="/atenciones" active>Atenciones</Nav.Link>
+              <Nav.Link href="/recetas/detalle/">Recetas</Nav.Link>
               <NavDropdown title="Más" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#">Registrar Atención</NavDropdown.Item>
                 <NavDropdown.Item href="#">Reportes</NavDropdown.Item>
