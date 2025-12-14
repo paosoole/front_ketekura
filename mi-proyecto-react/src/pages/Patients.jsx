@@ -20,12 +20,12 @@ export default function Patients() {
   const [q, setQ] = useState('')
   const navigate = useNavigate()
 
-  useEffect(() => { load() }, [])
+  useEffect(() => { load() }, [q]);
 
   async function load() {
     try {
       setLoading(true)
-      const res = await api.listPatients()
+      const res= await api.listPatients();
       setPatients(res.data || res || [])
     } catch (e) {
       console.error(e)
@@ -35,6 +35,17 @@ export default function Patients() {
     }
   }
 
+  // Función para filtrar pacientes de acuerdo al texto de búsqueda
+  const filterPatients = (patients) => {
+    return patients.filter(patient => {
+      const fullName = patient.fullName || '';  // Asegurarse de que `fullName` no sea `undefined` ni `null`
+      const pacRut = patient.pacRut ? patient.pacRut.toString() : '';      // Asegurarse de que `pacRut` no sea `undefined` ni `null`
+      
+      return fullName.toLowerCase().includes(q.toLowerCase()) || pacRut.includes(q);
+    });
+  };
+
+// Definición de las columnas de la grilla
   const cols = [
     { key: 'id', title: 'RUT', render: r => r.pacRut || r.id },
     { key: 'fullName', title: 'Nombre', render: r => r.fullName || `${r.pnombre || ''} ${r.apaterno || ''}` },
@@ -55,7 +66,7 @@ export default function Patients() {
             <Nav className="me-auto">
               <Nav.Link href="/dashboard" active>Home</Nav.Link>
               <Nav.Link href="medicos">Medicos</Nav.Link>
-              <Nav.Link href="atenciones">Atenciones</Nav.Link>
+              <Nav.Link href="/recetas/detalle/">Recetas</Nav.Link>
               <NavDropdown title="Más" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#">Registrar Paciente</NavDropdown.Item>
                 <NavDropdown.Item href="#">Reportes</NavDropdown.Item>
@@ -121,7 +132,7 @@ export default function Patients() {
               <div className="table-responsive">
                 <DataTable
                   columns={cols}
-                  data={patients}
+                  data={filterPatients(patients)}
                   onRowClick={(r) => navigate(`/pacientes/${r.pacRut || r.id}`)}
                 />
               </div>
