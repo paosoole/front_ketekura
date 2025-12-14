@@ -7,8 +7,12 @@ async function request(path, options = {}) {
   });
   console.log('API response:', res);
 
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
+  if (!res.ok) {
+    // Obtener detalles del error y lanzar el mensaje
+    const errorDetails = await res.text();  // Obtener detalles del error
+    console.error('Error response from API:', errorDetails);
+    throw new Error(`HTTP ${res.status}: ${errorDetails}`);
+    }
   return res.json();
 }
 
@@ -33,7 +37,7 @@ export const api = {
       if (!response.ok) {
         const errorDetails = await response.text();  // Obtener detalles del error
         console.error('Error al crear paciente:', errorDetails);
-        throw new Error('Error al crear paciente');
+        throw new Error(`Error al crear paciente: ${errorDetails}`);
       }
 
       return response.json();  // Devuelve los datos del paciente creado
@@ -57,6 +61,19 @@ export const api = {
 
   deleteRecipe: (id) =>
     request(`/recetas/${id}`, { method: 'DELETE' }),
+
+  // // Función para obtener todos los seguros de salud
+  // async getSaluds() {
+  //   try {
+  //     const response = await api.get('http://localhost:8090/api/salud');
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error('Error al obtener los seguros de salud:', error);
+  //     throw new Error('Error al obtener los seguros de salud');
+  //   }
+  // },
+
+
 };
 
 export default api;

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api'
 import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap'
+//import { useEffect } from 'react'
 
 export default function CreatePatient() {
   const navigate = useNavigate()
@@ -14,14 +15,37 @@ export default function CreatePatient() {
     amaterno: '',       // Apellido materno
     fecha_nacimiento: '', // Fecha de nacimiento
     telefono: '',       // Teléfono
-    sal_id: '',         // ID de salud (asegurado como sal_id)
+    salud: {
+        sal_id: ''},         // ID de salud (asegurado como sal_id)
   })
+
+  // const [saluds, setSaluds] = useState([])
+
+  //   useEffect(() => {
+  //   const fetchSaluds = async () => {
+  //     try {
+  //     const response = await api.getSaluds();
+  //     setSaluds(response.data);
+  //     } catch (error) {
+  //       console.error('Error al cargar los seguros de salud:', error);
+  //     }
+  //   };
+  //   fetchSaluds();
+  // }, []);
+
   const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setPatient({ ...patient, [name]: value })
+    if (name === 'sal_id') {
+    setPatient({
+      ...patient,
+      salud: { ...patient.salud, sal_id: value }  // Actualizamos solo sal_id dentro de 'salud'
+    });
+  } else {
+    setPatient({ ...patient, [name]: value });
   }
+}
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -142,7 +166,17 @@ export default function CreatePatient() {
                   </Form.Group>
 
                   {/* ID de Salud (sal_id) */}
-                  <Form.Group className="mb-3">
+                    <Form.Group className="mb-3">
+                    <Form.Label>ID de Salud</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="sal_id"  // Esto se mantendrá como 'sal_id'
+                      value={patient.salud.sal_id || ''}  // Asegúrate de que se tome el valor correcto desde `patient.salud.sal_id`
+                      onChange={handleChange}
+                      required
+                    />
+                  </Form.Group>
+                  {/* <Form.Group className="mb-3">
                     <Form.Label>ID de Salud</Form.Label>
                     <Form.Control
                       type="number"  // Cambié a "number" para asegurar que sea un número
@@ -151,7 +185,8 @@ export default function CreatePatient() {
                       onChange={handleChange}
                       required
                     />
-                  </Form.Group>
+                  
+                  </Form.Group> */}
 
                   {/* Botón de Enviar */}
                   <Button
