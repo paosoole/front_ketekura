@@ -144,7 +144,7 @@ const cols = [
                 <DataTable
                   columns={cols}
                   data={filterPatients(patients)}
-                  onRowClick={(r) => navigate(`/pacientes/${r.pacRut || r.id}`)}
+                  onRowClick={(r) => navigate(`/pacientes/${r.pac_run || r.id}`)}
                 />
               </div>
             )}
